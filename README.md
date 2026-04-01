@@ -1,46 +1,164 @@
-# Social Media Automation Platform
+# 🚀 SocialFlow AI
 
-AI-powered social media automation monorepo with a FastAPI backend, MySQL, Celery + Redis queueing, and a React + Tailwind + Framer Motion frontend.
+AI-powered social media automation platform for scheduling posts, generating content, and managing multi-platform workflows with a modern SaaS dashboard.
 
-## Stack
+---
 
-- Backend: FastAPI, SQLAlchemy, MySQL, Celery, Redis
-- Frontend: React, Vite, Tailwind CSS, Framer Motion, Recharts
-- Auth: JWT
-- AI: OpenAI API with graceful local mock fallback
+## ✨ Features
 
-## Project Structure
+* 🔐 **Authentication System**
 
-- `client/`: React frontend
-- `server/`: FastAPI backend and Celery worker
-- `shared/`: shared constants and helpers
-- `infra/`: Docker and nginx assets
+  * Secure login/signup with JWT
+  * User profile with avatar
 
-## Local Run
+* 🔗 **Multi-Platform Integration**
 
-1. Copy `.env.example` to `.env`
-2. Update MySQL and API credentials if needed
-3. Make sure your MySQL schema matches `server/schema.sql`
-4. If your current tables are the earlier minimal version from phpMyAdmin, recreate or alter them to match `server/schema.sql` before starting the backend
-5. Backend:
-   - `cd server`
-   - `pip install -r requirements.txt`
-   - `uvicorn app.main:app --reload`
-6. Worker:
-   - `cd server`
-   - `celery -A celery_worker.celery_app worker --loglevel=info`
-7. Frontend:
-   - `cd client`
-   - `npm install`
-   - `npm run dev`
+  * Twitter/X & LinkedIn support
+  * Scalable structure for Instagram (coming soon)
 
-## Docker Run
+* 📝 **Post Management**
 
-- `cd infra/docker`
-- `docker compose up --build`
+  * Create, edit, delete posts
+  * Multi-platform publishing
+  * Media upload & preview
 
-## Notes
+* 🤖 **AI Content Generator**
 
-- If `OPENAI_API_KEY` is not configured, AI generation falls back to mock branded output so the editor still works.
-- Twitter/X and LinkedIn OAuth URLs are generated when client credentials exist; otherwise the app falls back to a mock connect flow for local development.
-- Instagram is exposed as a UI-first coming-soon integration with mock backend publishing support.
+  * Generate captions, hashtags, hooks
+  * Tone selection (professional, viral, casual)
+
+* ⏳ **Smart Scheduler**
+
+  * Queue-based scheduling (Celery + Redis)
+  * Timezone support
+  * Auto retry on failure
+
+* ⚡ **Automation Workflows**
+
+  * Rule-based posting system
+  * Recurring posts & auto-posting
+
+* 📅 **Content Calendar**
+
+  * Drag & drop scheduling
+  * Monthly view
+
+* 📊 **Analytics Dashboard**
+
+  * Engagement tracking (likes, reach, etc.)
+  * Visual charts & performance insights
+
+* 🔔 **Notifications**
+
+  * Post success/failure alerts
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React.js
+* Tailwind CSS
+* Framer Motion
+
+### Backend
+
+* FastAPI (Python)
+* SQLAlchemy
+
+### Database
+
+* MySQL
+
+### Queue System
+
+* Celery + Redis
+
+### AI Integration
+
+* OpenAI API
+
+---
+
+## 📁 Project Structure
+
+```
+social-automation-platform/
+├── client/        # React frontend
+├── server/        # FastAPI backend
+├── shared/        # shared utilities
+├── infra/         # docker/nginx configs
+├── docs/          # documentation
+```
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone the repository
+
+```
+git clone https://github.com/sakshampandey380/SocialFow_AI.git
+cd socialflow-ai
+```
+
+---
+
+### 2. Backend Setup
+
+```
+cd server
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+---
+
+### 3. Frontend Setup
+
+```
+cd client
+npm install
+npm run dev
+```
+
+---
+
+### 4. Environment Variables
+
+Create `.env` file in root:
+
+```
+DATABASE_URL=your_mysql_url
+JWT_SECRET=your_secret
+OPENAI_API_KEY=your_key
+REDIS_URL=your_redis_url
+```
+
+---
+
+## 🚀 Future Improvements
+
+* Instagram API integration
+* Advanced analytics with AI insights
+* Team collaboration features
+* Mobile responsive optimization
+
+---
+
+## 💡 Inspiration
+
+Built as a modern SaaS-style automation tool similar to Buffer & Hootsuite, enhanced with AI capabilities.
+
+---
+
+## 👨‍💻 Author
+
+**Saksham Pandey**
+
+---
+
+## ⭐ Show Your Support
+
+If you like this project, give it a ⭐ on GitHub!
