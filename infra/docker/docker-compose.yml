@@ -1,0 +1,131 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: social_media_automation_agent
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../../server/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ../..
+      dockerfile: infra/docker/dockerfile.backend
+    env_file:
+      - ../../.env
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../server:/app/server
+      - ../../.env:/app/.env
+
+  worker:
+    build:
+      context: ../..
+      dockerfile: infra/docker/dockerfile.backend
+    command: celery -A celery_worker.celery_app worker --loglevel=info
+    env_file:
+      - ../../.env
+    depends_on:
+      - backend
+      - redis
+    volumes:
+      - ../../server:/app/server
+      - ../../.env:/app/.env
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: infra/docker/dockerfile.frontend
+    env_file:
+      - ../../.env
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../../client:/app/client
+
+volumes:
+  mysql_data:
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: social_media_automation_agent
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ../..
+      dockerfile: infra/docker/dockerfile.backend
+    env_file:
+      - ../../.env
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../server:/app/server
+      - ../../.env:/app/.env
+
+  worker:
+    build:
+      context: ../..
+      dockerfile: infra/docker/dockerfile.backend
+    command: celery -A server.celery_worker.celery_app worker --loglevel=info
+    env_file:
+      - ../../.env
+    depends_on:
+      - backend
+      - redis
+    volumes:
+      - ../../server:/app/server
+      - ../../.env:/app/.env
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: infra/docker/dockerfile.frontend
+    env_file:
+      - ../../.env
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../../client:/app/client
+
+volumes:
+  mysql_data:
